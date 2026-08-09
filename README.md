@@ -53,7 +53,9 @@ Three ideas the whole design is built around:
 - **Grounded chat** = every number in an answer comes from a SQL query over our
   own stored decision data; Gemini only phrases the sentence. Zero-count
   questions return **"0"** and action requests are **declined** — the chat can't
-  hallucinate a number. See [`backend/app/chat.py`](backend/app/chat.py).
+  hallucinate a number. Answers are **scoped to the batch you just routed**
+  (via `run_id`), so "how many of *these* emails…" reflects that batch, not the
+  whole database. See [`backend/app/chat.py`](backend/app/chat.py).
 
 ---
 
@@ -176,7 +178,8 @@ ever read server-side, never reachable from the browser network tab.
   `{processed, tasks_created, tasks_updated, skipped, errors}` only after every
   task is written
 - `GET /api/tasks` · `GET /api/emails` · `GET /api/stats`
-- `POST /api/chat` — returns `{answer, supporting_data}`
+- `POST /api/chat` — returns `{answer, supporting_data}`; accepts an optional
+  `run_id` to scope the answer to a single routed batch
 - `GET /api/sample-emails?count=250` — generate a sample batch for testing
 
 ---
