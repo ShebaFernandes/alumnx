@@ -23,6 +23,7 @@ export default function App() {
   const [emails, setEmails] = useState([]); // raw pasted batch (table view)
   const [ingestResult, setIngestResult] = useState(null);
   const [stats, setStats] = useState(null);
+  const [runId, setRunId] = useState(null); // scopes chat to the routed batch
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -75,9 +76,10 @@ export default function App() {
     try {
       const arr = emails.length ? emails : parseEmails(raw);
       setEmails(arr);
-      const runId = "run_" + Date.now();
-      const result = await api.ingest(arr, runId);
+      const thisRun = "run_" + Date.now();
+      const result = await api.ingest(arr, thisRun);
       setIngestResult(result);
+      setRunId(result.run_id || thisRun); // scope the chat to this batch
       const s = await api.stats();
       setStats(s);
     } catch (e) {
@@ -156,7 +158,7 @@ export default function App() {
           Answers are grounded in the backend's stored classification data — not
           re-inferred from raw text. Try a zero-count or out-of-scope question.
         </p>
-        <ChatPanel disabled={!ingestResult} />
+        <ChatPanel disabled={!ingestResult} runId={runId} />
       </section>
 
       <footer>

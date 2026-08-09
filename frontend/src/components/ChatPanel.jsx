@@ -11,7 +11,7 @@ const SUGGESTIONS = [
   "Send Aarti an email about the Meridian Steel RFP.",
 ];
 
-export default function ChatPanel({ disabled }) {
+export default function ChatPanel({ disabled, runId }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -23,7 +23,7 @@ export default function ChatPanel({ disabled }) {
     setMessages((m) => [...m, { role: "user", text: q }]);
     setBusy(true);
     try {
-      const res = await api.chat(q);
+      const res = await api.chat(q, runId);
       setMessages((m) => [
         ...m,
         { role: "bot", text: res.answer, data: res.supporting_data },

@@ -132,6 +132,7 @@ class IngestRequest(BaseModel):
 class ChatRequest(BaseModel):
     candidate_id: str
     query: str
+    run_id: Optional[str] = None  # scope answers to one ingest batch
 
     @field_validator("candidate_id")
     @classmethod

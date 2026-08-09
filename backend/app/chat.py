@@ -27,9 +27,30 @@ from .roster import NAME_BY_ID
 # Structured snapshot — the single source of truth for every answer
 # --------------------------------------------------------------------------
 
-def build_snapshot(db: Session, candidate_id: str) -> dict:
-    decisions = db.query(models.EmailDecision).filter_by(candidate_id=candidate_id).all()
-    tasks = db.query(models.Task).filter_by(candidate_id=candidate_id).all()
+def build_snapshot(db: Session, candidate_id: str, run_id: Optional[str] = None) -> dict:
+    """Structured numeric snapshot. When run_id is given, everything is scoped to
+    just that ingest run — this is what the chat uses, so "how many of THESE
+    emails" answers about the batch the user just pasted, not the whole DB
+    (which also holds the automated grading runs)."""
+    dq = db.query(models.EmailDecision).filter_by(candidate_id=candidate_id)
+    if run_id:
+        dq = dq.filter_by(run_id=run_id)
+    decisions = dq.all()
+
+    if run_id:
+        # Only the tasks produced by this run's emails.
+        run_task_ids = [d.task_id for d in decisions if d.task_id]
+        if run_task_ids:
+            tasks = (
+                db.query(models.Task)
+                .filter(models.Task.candidate_id == candidate_id)
+                .filter(models.Task.task_id.in_(run_task_ids))
+                .all()
+            )
+        else:
+            tasks = []
+    else:
+        tasks = db.query(models.Task).filter_by(candidate_id=candidate_id).all()
 
     processed = len(decisions)
 
@@ -128,8 +149,8 @@ QUESTION: {query}
 Reply with a short natural-language answer only."""
 
 
-def answer(db: Session, candidate_id: str, query: str) -> dict:
-    snapshot = build_snapshot(db, candidate_id)
+def answer(db: Session, candidate_id: str, query: str, run_id: Optional[str] = None) -> dict:
+    snapshot = build_snapshot(db, candidate_id, run_id)
 
     # Action requests are out of scope — decline, don't pretend to act (§8.3).
     if is_action_request(query):

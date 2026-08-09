@@ -218,7 +218,7 @@ def api_stats(candidate_id: str = Query(...), db: Session = Depends(get_db)):
 
 @app.post("/api/chat")
 def api_chat(body: ChatRequest, db: Session = Depends(get_db)):
-    return chat.answer(db, body.candidate_id, body.query)
+    return chat.answer(db, body.candidate_id, body.query, body.run_id)
 
 
 @app.get("/api/sample-emails")

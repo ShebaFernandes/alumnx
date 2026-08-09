@@ -34,9 +34,9 @@ export const api = {
 
   sampleEmails: (count = 250) => req(`/api/sample-emails?count=${count}`),
 
-  chat: (query) =>
+  chat: (query, runId) =>
     req("/api/chat", {
       method: "POST",
-      body: JSON.stringify({ candidate_id: CANDIDATE_ID, query }),
+      body: JSON.stringify({ candidate_id: CANDIDATE_ID, query, run_id: runId }),
     }),
 };
