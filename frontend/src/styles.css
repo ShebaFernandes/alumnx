@@ -1,0 +1,111 @@
+:root {
+  --bg: #0f1420;
+  --card: #1a2230;
+  --card2: #141b27;
+  --text: #e6ebf2;
+  --muted: #8a97a8;
+  --border: #2a3547;
+  --accent: #4f8cff;
+  --green: #2fbf71;
+  --blue: #4f8cff;
+  --red: #ff5c6c;
+  --gray: #64748b;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+}
+
+.app { max-width: 1080px; margin: 0 auto; padding: 24px 20px 60px; }
+
+header h1 { margin: 0 0 4px; font-size: 22px; }
+.cand { color: var(--muted); font-size: 13px; }
+.cand code { color: var(--text); background: var(--card2); padding: 1px 6px; border-radius: 5px; }
+.cand .api { margin-left: 6px; }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-top: 18px;
+}
+.card h2 { margin: 0 0 12px; font-size: 16px; }
+.muted { color: var(--muted); font-size: 13px; margin: 4px 0 12px; }
+
+textarea, input {
+  width: 100%;
+  background: var(--card2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 13px;
+}
+textarea { resize: vertical; }
+
+.row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+
+button {
+  background: var(--card2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  cursor: pointer;
+}
+button:hover:not(:disabled) { border-color: var(--accent); }
+button:disabled { opacity: 0.5; cursor: default; }
+button.primary { background: var(--accent); border-color: var(--accent); color: white; }
+button.ghost { border-style: dashed; }
+
+.filebtn {
+  display: inline-flex; align-items: center;
+  background: var(--card2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 14px; font-size: 13px; cursor: pointer;
+}
+
+.error { color: var(--red); font-size: 13px; margin-top: 10px; }
+
+.tablewrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; max-height: 420px; overflow-y: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { position: sticky; top: 0; background: var(--card2); color: var(--muted); font-weight: 600; }
+td.mono, .mono { font-family: ui-monospace, monospace; color: var(--muted); }
+td.preview { color: var(--muted); max-width: 320px; }
+
+.pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.pill { background: var(--card2); border: 1px solid var(--border); border-radius: 20px; padding: 3px 12px; font-size: 12px; }
+.pill.green { color: var(--green); border-color: var(--green); }
+.pill.blue { color: var(--blue); border-color: var(--blue); }
+.pill.gray { color: var(--gray); }
+.pill.red { color: var(--red); border-color: var(--red); }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.statgroup h4 { margin: 0 0 8px; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.statgroup .pill { margin: 0 6px 6px 0; display: inline-block; }
+
+/* chat */
+.chat { display: flex; flex-direction: column; gap: 12px; }
+.suggestions { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { font-size: 12px; border-radius: 16px; padding: 5px 12px; }
+.messages { display: flex; flex-direction: column; gap: 12px; min-height: 80px; max-height: 460px; overflow-y: auto; padding: 4px; }
+.msg { display: flex; flex-direction: column; }
+.msg.user { align-items: flex-end; }
+.msg .bubble { max-width: 80%; padding: 9px 13px; border-radius: 12px; font-size: 14px; }
+.msg.user .bubble { background: var(--accent); color: white; }
+.msg.bot .bubble { background: var(--card2); border: 1px solid var(--border); }
+.supporting { background: #0b0f17; border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 11.5px; color: var(--muted); overflow-x: auto; margin: 6px 0 0; max-width: 80%; }
+.chatinput { display: flex; gap: 10px; }
+.chatinput input { flex: 1; font-family: inherit; }
+
+footer { color: var(--muted); font-size: 12px; margin-top: 24px; text-align: center; }
+footer code { background: var(--card2); padding: 1px 5px; border-radius: 4px; }
